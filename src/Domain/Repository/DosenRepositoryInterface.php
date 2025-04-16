@@ -7,7 +7,7 @@ namespace App\Domain\Repository;
 use App\Domain\Entity\Dosen;
 use App\Domain\ValueObject\DosenId;
 
-interface DosenRepository
+interface DosenRepositoryInterface
 {
     public function byId(DosenId $id): ?Dosen;
 }
