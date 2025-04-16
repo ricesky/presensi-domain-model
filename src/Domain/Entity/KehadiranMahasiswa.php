@@ -14,9 +14,9 @@ use DateTime;
 class KehadiranMahasiswa
 {   
     private KehadiranMahasiswaId $id;
-    private JenisKehadiran $jenisKehadiran;
-    private DateTime $waktuCatat;
-    private string $pencatat;
+    private ?JenisKehadiran $jenisKehadiran;
+    private ?DateTime $waktuCatat;
+    private ?string $pencatat;
     
     public function __construct(
         KehadiranMahasiswaId $id,

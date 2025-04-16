@@ -37,29 +37,17 @@ class ModePertemuan
 
     public function isOnline(): bool
     {
-        if ($this->mode === self::ONLINE) {
-            return true;
-        }
-
-        return false;
+        return $this->mode === self::ONLINE;
     }
 
     public function isOffline(): bool
     {
-        if ($this->mode === self::OFFLINE) {
-            return true;
-        }
-
-        return false;
+        return $this->mode === self::OFFLINE;
     }
 
     public function isHybrid(): bool
     {
-        if ($this->mode === self::HYBRID) {
-            return true;
-        }
-
-        return false;
+        return $this->mode === self::HYBRID;
     }
 
     public static function online(): ModePertemuan

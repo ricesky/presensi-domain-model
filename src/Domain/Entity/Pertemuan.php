@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-use App\Core\Exception\PertemuanException;
+use App\Domain\Exception\PertemuanException;
 use App\Domain\ValueObject\BentukKehadiran;
 use App\Domain\ValueObject\JadwalPertemuan;
 use App\Domain\ValueObject\KodePresensi;
@@ -144,17 +144,18 @@ class Pertemuan
     public function mulai(
         ModePertemuan $modePertemuan,
         BentukKehadiran $bentukKehadiran,
+        DateTime $waktuMulai,
         ?int $menitBerlaku): void
     {
         if ($this->kelas->isPermanen()) {
             throw new PertemuanException('tidak_dapat_memulai_pertemuan_karena_nilai_sudah_permanen');
         }
 
-        if (!$this->isBolehMulaiPertemuan()) {
+        if (!$this->isBolehMulaiPertemuan($waktuMulai)) {
             throw new PertemuanException('pertemuan_belum_boleh_dimulai');
         }
 
-        if ($this->isTerlewat()) {
+        if ($this->isTerlewat($waktuMulai)) {
             throw new PertemuanException('pertemuan_sudah_terlewati');
         }
 
@@ -230,30 +231,24 @@ class Pertemuan
         $this->kodePresensi = $this->kodePresensi->gantiKode();
     }
 
-    private function isBolehMulaiPertemuan(): bool
+    private function isBolehMulaiPertemuan(DateTime $waktuSekarang): bool
     {
         $jeda = new \DateInterval('PT' . self::JEDA_PRESENSI . 'M');
         $jamMulai = $this->jadwal->getJamMulai();
         $jamAwalDiperbolehkan = $jamMulai->sub($jeda);
-        $sekarang = new DateTime('now');
 
-        if ($sekarang >= $jamAwalDiperbolehkan) {
+        if ($waktuSekarang >= $jamAwalDiperbolehkan) {
             return true;
         }
 
         return false;
     }
 
-    private function isTerlewat(): bool
+    private function isTerlewat(DateTime $waktuSekarang): bool
     {
         $jamSelesai = $this->jadwal->getJamSelesai();
-        $sekarang = new DateTime('now');
 
-        if ($sekarang > $jamSelesai) {
-            return true;
-        }
-
-        return false;
+        return $waktuSekarang > $jamSelesai;
     }
 
 }
