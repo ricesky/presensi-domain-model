@@ -6,6 +6,6 @@ namespace App\Domain\Exception;
 
 use Exception;
 
-class TatapMukaException extends Exception
-{
+class KodePresensiException extends Exception
+{   
 }

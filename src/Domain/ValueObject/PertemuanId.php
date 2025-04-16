@@ -6,23 +6,23 @@ namespace App\Domain\ValueObject;
 
 use Ramsey\Uuid\Uuid;
 
-class TatapMukaId
+class PertemuanId
 {
-    private string $id;
+    private $id;
 
-    public function __construct(string $id = null)
+    public function __construct(?string $id = null)
     {
         $this->id = $id ? : Uuid::uuid4()->toString();
     }
 
-    public function id() : string
+    public function id(): string
     {
         return $this->id;
     }
 
-    public function equals(TatapMukaId $tatapMukaId): bool
+    public function equals(PertemuanId $pertemuanId): bool
     {
-        return $this->id === $tatapMukaId->id;
+        return $this->id === $pertemuanId->id;
     }
 
     public function __toString(): string

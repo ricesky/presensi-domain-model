@@ -7,7 +7,7 @@ namespace App\Domain\ValueObject;
 use DateTime;
 use InvalidArgumentException;
 
-class JadwalTatapMuka
+class JadwalPertemuan
 {
     private DateTime $tanggal;
     private DateTime $jamMulai;
@@ -15,6 +15,18 @@ class JadwalTatapMuka
 
     public function __construct(DateTime $tanggal, DateTime $jamMulai, DateTime $jamSelesai)
     {
+        $jamMulai->setDate(
+            intval($tanggal->format('Y')), 
+            intval($tanggal->format('m')), 
+            intval($tanggal->format('d'))
+        );
+
+        $jamSelesai->setDate(
+            intval($tanggal->format('Y')), 
+            intval($tanggal->format('m')), 
+            intval($tanggal->format('d'))
+        );
+        
         $tanggalTatapMuka = $tanggal->format('Y-m-d');
         $tanggalTatapMukaMulai = $jamMulai->format('Y-m-d');
         $tanggalTatapMukaSelesai = $jamSelesai->format('Y-m-d');
@@ -38,18 +50,18 @@ class JadwalTatapMuka
         $this->jamSelesai = $jamSelesai;
     }
 
-    public function getTanggal() : string
+    public function getTanggal(): DateTime
     {
-        return $this->tanggal->format('Y-m-d');
+        return $this->tanggal;
     }
 
-    public function getJamMulai() : string
+    public function getJamMulai(): DateTime
     {
-        return $this->jamMulai->format('Y-m-d H:i:s');
+        return $this->jamMulai;
     }
 
-    public function getJamSelesai() : string
+    public function getJamSelesai(): DateTime
     {
-        return $this->jamSelesai->format('Y-m-d H:i:s');
+        return $this->jamSelesai;
     }
 }

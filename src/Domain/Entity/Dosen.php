@@ -20,12 +20,12 @@ class Dosen
         $this->nama = $nama;
     }
 
-    public function getDosenId() : DosenId
+    public function getDosenId(): DosenId
     {
         return $this->dosenId;
     }
 
-    public function getNama() : string
+    public function getNama(): string
     {
         return $this->nama;
     }

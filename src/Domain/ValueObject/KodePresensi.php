@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
+use App\Domain\Exception\KodePresensiException;
 use DateTime;
 
 class KodePresensi
 {
-    private ?string $kode;
-    private ?DateTime $berlakuSampai;
+    private const PANJANG_KODE_PRESENSI = 6;
 
-    public function __construct(?string $kode, ?DateTime $berlakuSampai)
+    private string $kode;
+    private DateTime $berlakuSampai;
+
+    public function __construct(string $kode, DateTime $berlakuSampai)
     {
+        if (strlen($kode) != self::PANJANG_KODE_PRESENSI) {
+            throw new KodePresensiException('panjang_kode_presensi_tidak_sesuai');
+        }
+
         $this->kode = $kode;
         $this->berlakuSampai = $berlakuSampai;
     }
 
     public function isValid(string $kode): bool
     {
-        $now = new DateTime();
+        $now = new DateTime('now');
 
         if ($this->kode == $kode && $this->berlakuSampai > $now) {
             return true;
@@ -28,7 +35,7 @@ class KodePresensi
         return false;
     }
 
-    public function generate(): KodePresensi
+    public static function generate(DateTime $berlakuSampai): KodePresensi
     {
         $newCode = '';
         for ($digit = 1; $digit <= 6; $digit++) {
@@ -36,17 +43,21 @@ class KodePresensi
             $newCode .= $rand;
         }
 
-        $this->kode = $newCode;
-        return $this;
+        return new KodePresensi($newCode, $berlakuSampai);
     }
 
-    public function getKode(): ?string
+    public function gantiKode(): KodePresensi
+    {
+        return KodePresensi::generate($this->berlakuSampai);
+    }
+
+    public function getKode(): string
     {
         return $this->kode;
     }
 
-    public function getBerlakuSampai(): string
+    public function getBerlakuSampai(): DateTime
     {
-        return $this->berlakuSampai->format('Y-m-d H:i:s');
+        return $this->berlakuSampai;
     }
 }
