@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Domain\ValueObject;
+namespace Tests\Domain\Entity;
 
 use App\Domain\Entity\TatapMuka;
 use App\Domain\ValueObject\JadwalTatapMuka;
